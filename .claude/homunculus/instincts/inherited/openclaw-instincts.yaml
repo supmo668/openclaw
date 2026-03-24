@@ -1,0 +1,253 @@
+# Instincts generated from https://github.com/supmo668/openclaw
+# Generated: 2026-03-24T07:14:01.941Z
+# Version: 2.0
+
+---
+id: openclaw-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: fix, refactor, feat, chore, docs
+
+## Evidence
+
+- 200 commits analyzed
+- Detected conventional commit pattern
+- Examples: chore: trigger CI/CD deploy, ci: trigger deploy with org-level Fly token
+
+---
+id: openclaw-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Commit Length
+
+## Action
+
+Write moderate-length commit messages (~50 characters)
+
+## Evidence
+
+- Average commit message length: 60 chars
+- Based on 200 commits
+
+---
+id: openclaw-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: openclaw-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Export Style
+
+## Action
+
+Prefer mixed exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: mixed
+
+---
+id: openclaw-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: acp, agents, auto-reply, browser, canvas-host
+
+---
+id: openclaw-test-colocate
+trigger: "when writing tests"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Test Colocate
+
+## Action
+
+Place test file next to the source file (e.g., Button.test.tsx next to Button.tsx)
+
+## Evidence
+
+- Colocated test pattern detected
+- Tests live alongside source files
+
+---
+id: openclaw-test-framework
+trigger: "when writing tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Test Framework
+
+## Action
+
+Use vitest as the test framework
+
+## Evidence
+
+- Test framework detected: vitest
+- File pattern: *.test.ts
+
+---
+id: openclaw-test-naming
+trigger: "when creating a test file"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Test Naming
+
+## Action
+
+Name test files using the pattern: *.test.ts
+
+## Evidence
+
+- File pattern: *.test.ts
+- Consistent across test files
+
+---
+id: openclaw-test-mocking
+trigger: "when mocking dependencies in tests"
+confidence: 0.75
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Test Mocking
+
+## Action
+
+Use vi.mock for mocking
+
+## Evidence
+
+- Mocking pattern detected: vi.mock
+- Consistent across test files
+
+---
+id: openclaw-test-types
+trigger: "when planning tests for a feature"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Test Types
+
+## Action
+
+Write unit, integration, e2e tests to match project standards
+
+## Evidence
+
+- Test types detected: unit, integration, e2e
+- Coverage config: yes
+
+---
+id: openclaw-workflow-database-migration
+trigger: "when modifying the database schema or adding tables"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Workflow Database Migration
+
+## Action
+
+Follow the database-migration workflow:
+1. Create migration file
+2. Update schema definitions
+3. Generate/update types
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~4x per month
+- Files: **/types.ts, **/schema.*
+
+---
+id: openclaw-workflow-feature-development
+trigger: "when implementing a new feature"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/supmo668/openclaw
+---
+
+# Openclaw Workflow Feature Development
+
+## Action
+
+Follow the feature-development workflow:
+1. Add feature implementation
+2. Add tests for feature
+3. Update documentation
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~10x per month
+- Files: src/config/sessions/*, src/gateway/protocol/schema/*, src/gateway/*
+
