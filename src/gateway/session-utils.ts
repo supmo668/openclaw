@@ -1,11 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import type {
-  GatewayAgentRow,
-  GatewaySessionRow,
-  GatewaySessionsDefaults,
-  SessionsListResult,
-} from "./session-utils.types.js";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { lookupContextTokens } from "../agents/context.js";
 import { DEFAULT_CONTEXT_TOKENS, DEFAULT_MODEL, DEFAULT_PROVIDER } from "../agents/defaults.js";
@@ -34,6 +28,12 @@ import {
 import { isCronRunSessionKey } from "../sessions/session-key-utils.js";
 import { normalizeSessionDeliveryFields } from "../utils/delivery-context.js";
 import { readSessionTitleFieldsFromTranscript } from "./session-utils.fs.js";
+import type {
+  GatewayAgentRow,
+  GatewaySessionRow,
+  GatewaySessionsDefaults,
+  SessionsListResult,
+} from "./session-utils.types.js";
 
 export {
   archiveFileOnDisk,
@@ -685,6 +685,23 @@ export function listSessionsFromStore(params: {
       ? Math.max(1, Math.floor(opts.activeMinutes))
       : undefined;
 
+  const updatedAfter =
+    typeof opts.updatedAfter === "number" && Number.isFinite(opts.updatedAfter)
+      ? opts.updatedAfter
+      : undefined;
+  const updatedBefore =
+    typeof opts.updatedBefore === "number" && Number.isFinite(opts.updatedBefore)
+      ? opts.updatedBefore
+      : undefined;
+  const createdAfter =
+    typeof opts.createdAfter === "number" && Number.isFinite(opts.createdAfter)
+      ? opts.createdAfter
+      : undefined;
+  const createdBefore =
+    typeof opts.createdBefore === "number" && Number.isFinite(opts.createdBefore)
+      ? opts.createdBefore
+      : undefined;
+
   let sessions = Object.entries(store)
     .filter(([key]) => {
       if (isCronRunSessionKey(key)) {
@@ -724,6 +741,7 @@ export function listSessionsFromStore(params: {
       return entry?.label === label;
     })
     .map(([key, entry]) => {
+      const createdAt = entry?.createdAt ?? null;
       const updatedAt = entry?.updatedAt ?? null;
       const total = resolveFreshSessionTotalTokens(entry);
       const totalTokensFresh =
@@ -768,6 +786,7 @@ export function listSessionsFromStore(params: {
         space,
         chatType: entry?.chatType,
         origin,
+        createdAt,
         updatedAt,
         sessionId: entry?.sessionId,
         systemSent: entry?.systemSent,
@@ -803,6 +822,20 @@ export function listSessionsFromStore(params: {
   if (activeMinutes !== undefined) {
     const cutoff = now - activeMinutes * 60_000;
     sessions = sessions.filter((s) => (s.updatedAt ?? 0) >= cutoff);
+  }
+
+  // Absolute timestamp range filters (ms since epoch).
+  if (updatedAfter !== undefined) {
+    sessions = sessions.filter((s) => (s.updatedAt ?? 0) >= updatedAfter);
+  }
+  if (updatedBefore !== undefined) {
+    sessions = sessions.filter((s) => (s.updatedAt ?? 0) <= updatedBefore);
+  }
+  if (createdAfter !== undefined) {
+    sessions = sessions.filter((s) => (s.createdAt ?? 0) >= createdAfter);
+  }
+  if (createdBefore !== undefined) {
+    sessions = sessions.filter((s) => (s.createdAt ?? 0) <= createdBefore);
   }
 
   if (typeof opts.limit === "number" && Number.isFinite(opts.limit)) {
